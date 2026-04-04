@@ -19,17 +19,37 @@ main_frame = ttk.Frame(root)
 # Main place layout
 menu_frame.place(x = 0, y = 0,relwidth= 0.3, relheight = 1)
 main_frame.place(relx = 0.3, y = 0, relwidth = 0.7, relheight = 1)
-ttk.Label(menu_frame, background='red').pack(expand=True, fill='both')
-ttk.Label(main_frame, background='yellow').pack(expand=True, fill='both')
+# ttk.Label(menu_frame, background='red').pack(expand=True, fill='both')
+# ttk.Label(main_frame, background='yellow').pack(expand=True, fill='both')
 
 # menu widgets
+work_title = ttk.Label(menu_frame, text="Work Interval: ")
+rest_title = ttk.Label(menu_frame, text="Rest Interval: ")
+work_interval = ttk.Spinbox(menu_frame, from_=0, to=999)
+rest_interval = ttk.Spinbox(menu_frame, from_=0, to=999)
+
 start_button = ttk.Button(menu_frame, text = 'Start')
 pause_button = ttk.Button(menu_frame, text = 'Pause')
 reset_button = ttk.Button(menu_frame, text = 'Reset')
 
+# Menu Layout
+menu_frame.columnconfigure((0,1), weight = 1, uniform = 'a')
+# menu_frame.rowconfigure((0,1,2,3), weight = 1, uniform = 'a')
+menu_frame.rowconfigure((0,1), uniform = 'a')
+menu_frame.rowconfigure((2,3,4), weight = 1, uniform = 'a')
+
+work_title.grid(row = 0, column= 0, sticky='nwe')
+work_interval.grid(row = 0, column = 1, sticky = 'nwe')
+
+rest_title.grid(row = 1, column= 0, sticky='new')
+rest_interval.grid(row = 1, column = 1, sticky = 'nwe')
+
+start_button.grid(row = 3, column = 0, sticky = 'nswe', columnspan = 2)
+reset_button.grid(row = 4, column = 0, sticky = 'nswe', columnspan = 2)
+
 # Things...
-welcome_msg = tk.Label(root, text="Welcome to my Pomodoro App!")
-welcome_msg.pack()
+# welcome_msg = tk.Label(root, text="Welcome to my Pomodoro App!")
+# welcome_msg.pack()
 
 # work_label = tk.Label(root, text="Work Interval: ")
 # rest_title = tk.Label(root, text="Rest Interval: ")
