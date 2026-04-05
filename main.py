@@ -38,31 +38,26 @@ menu_frame.columnconfigure((0,1), weight = 1, uniform = 'a')
 menu_frame.rowconfigure((0,1), uniform = 'a')
 menu_frame.rowconfigure((2,3,4), weight = 1, uniform = 'a')
 
-work_title.grid(row = 0, column= 0, sticky='nwe')
-work_interval.grid(row = 0, column = 1, sticky = 'nwe')
+work_title.grid(row = 0, column= 0, sticky='nwe', pady= 40)
+work_interval.grid(row = 0, column = 1, sticky = 'nwe', pady = 40)
 
-rest_title.grid(row = 1, column= 0, sticky='new')
-rest_interval.grid(row = 1, column = 1, sticky = 'nwe')
+rest_title.grid(row = 1, column= 0, sticky='new', pady = 20)
+rest_interval.grid(row = 1, column = 1, sticky = 'nwe', pady = 20)
 
 start_button.grid(row = 3, column = 0, sticky = 'nswe', columnspan = 2)
 reset_button.grid(row = 4, column = 0, sticky = 'nswe', columnspan = 2)
 
-# Things...
-# welcome_msg = tk.Label(root, text="Welcome to my Pomodoro App!")
-# welcome_msg.pack()
 
-# work_label = tk.Label(root, text="Work Interval: ")
-# rest_title = tk.Label(root, text="Rest Interval: ")
-# work_interval = tk.Spinbox(root, from_=0, to=999)
-# rest_interval = tk.Spinbox(root, from_=0, to=999)
+# Main Widgets (The timer countdown and what state the app is in)
+state_label = ttk.Label(main_frame, text = '[Click "start"]/[Work]/[Rest]/[Paused]',
+                        font = ("Verdana", 12) )
+timer_label = ttk.Label(main_frame, text = '25:00', font = ('Verdana', 14))
 
-# work_label.grid(row=0, column=0)
-# work_interval.grid(row=0,column=1)
-# rest_title.grid(row=1, column=0)
-# rest_interval.grid(row=1,column=1)
+# Main layout 
+state_label.pack(side = 'top', expand = False, fill = 'none', pady= 40)
+timer_label.pack(side = 'top', expand = True, fill = 'none')
 
-# #stop_btn = tk.Button(root, text="Stop")
-# #stop_btn.pack()
+
 
 root.mainloop();
 # Main logic? Timedate? Time? or TimeDelta?
