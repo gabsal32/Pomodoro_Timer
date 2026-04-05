@@ -6,7 +6,11 @@ from tkinter import ttk
 root = tk.Tk()
 root.title("Pomodoro Timer")
 root.geometry('600x600')
-root.minsize(600,600)
+root.minsize(900,600)
+
+# ttk style
+style = ttk.Style()
+style.configure("TButton", font=("Verdana", 12))
 
 # App Icon
 icon = tk.PhotoImage(file="pom_icon.png")
@@ -16,17 +20,17 @@ root.iconphoto(True, icon)
 menu_frame = ttk.Frame(root)
 main_frame = ttk.Frame(root)
 
-# Main place layout
+# Main 'place' layout
 menu_frame.place(x = 0, y = 0,relwidth= 0.3, relheight = 1)
 main_frame.place(relx = 0.3, y = 0, relwidth = 0.7, relheight = 1)
 # ttk.Label(menu_frame, background='red').pack(expand=True, fill='both')
 # ttk.Label(main_frame, background='yellow').pack(expand=True, fill='both')
 
 # menu widgets
-work_title = ttk.Label(menu_frame, text="Work Interval: ")
-rest_title = ttk.Label(menu_frame, text="Rest Interval: ")
-work_interval = ttk.Spinbox(menu_frame, from_=0, to=999)
-rest_interval = ttk.Spinbox(menu_frame, from_=0, to=999)
+work_title = ttk.Label(menu_frame, text="Work Interval: ", font=("Verdana", 12))
+rest_title = ttk.Label(menu_frame, text="Rest Interval: ", font=("Verdana", 12))
+work_interval = ttk.Spinbox(menu_frame, from_=0, to=999, font=("Verdana", 12))
+rest_interval = ttk.Spinbox(menu_frame, from_=0, to=999, font=("Verdana", 12))
 
 start_button = ttk.Button(menu_frame, text = 'Start')
 pause_button = ttk.Button(menu_frame, text = 'Pause')
@@ -50,14 +54,12 @@ reset_button.grid(row = 4, column = 0, sticky = 'nswe', columnspan = 2)
 
 # Main Widgets (The timer countdown and what state the app is in)
 state_label = ttk.Label(main_frame, text = '[Click "start"]/[Work]/[Rest]/[Paused]',
-                        font = ("Verdana", 12) )
-timer_label = ttk.Label(main_frame, text = '25:00', font = ('Verdana', 14))
+                        font = ("Verdana", 14) )
+timer_label = ttk.Label(main_frame, text = '25:00', font = ('Verdana', 25))
 
 # Main layout 
 state_label.pack(side = 'top', expand = False, fill = 'none', pady= 40)
 timer_label.pack(side = 'top', expand = True, fill = 'none')
-
-
 
 root.mainloop();
 # Main logic? Timedate? Time? or TimeDelta?
