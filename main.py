@@ -65,3 +65,15 @@ root.mainloop();
 # Main logic? Timedate? Time? or TimeDelta?
 
 # If the file gets too long, maybe I'll turn the timer into its own class...
+
+# Forgot to make a main function, so I'll make one
+def main():
+    root = tk.Tk()
+    root.title("Pomodoro Timer")
+    root.geometry('600x600')
+    root.minsize(900,600)
+    app = PomodoroApp(root) # Will be making gui into its own class later on...
+    root.mainloop()
+    
+if __name__ == "__main__":
+    main()
