@@ -1,6 +1,10 @@
-# Put any imports and global variable here
+# Imports here
 import tkinter as tk
 from tkinter import ttk
+import time 
+
+# Global Variables here
+
 
 # # Window
 # root = tk.Tk()
@@ -66,7 +70,9 @@ from tkinter import ttk
 
 # Main logic? Timedate? Time? or TimeDelta?
 def start_timer():
-    # add stuff here
+    # time remaining = time_now + (work_interval OR rest_interval) depending
+    # on which state we are in
+    #
     print("the timer was started!")
     return -1
 
