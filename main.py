@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 import time 
-import playsound3
+from playsound3 import playsound
 
 
 # Global Variables here
@@ -160,6 +160,7 @@ class PomodoroApp:
         
     # Main logic? Timedate? Time? or TimeDelta?
     def start_timer(self):
+        playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
         # time remaining = time_now + (work_interval OR rest_interval) depending
         # on which state we are in
         # try 
@@ -170,16 +171,20 @@ class PomodoroApp:
         print("work interval: " + str(self.time_remaining) + " minutes")
         
         print("the timer was started!")
+
         return -1
 
     def pause_timer(self):
+        playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
         # add stuff here
         print("The timer was paused!")
         return -1
 
     def reset_timer(self):
+        playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
         # add stuff here
         print("The timer was reset!")
+
         return -1
 
     def countdown(self):
