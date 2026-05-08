@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import ttk
 import time 
+import playsound3
+
 
 # Global Variables here
 
