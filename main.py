@@ -7,7 +7,6 @@ from playsound3 import playsound
 
 # Global Variables here
 
-
 # # Window
 # root = tk.Tk()
 # root.title("Pomodoro Timer")
@@ -72,6 +71,12 @@ from playsound3 import playsound
 
 # GUI 
 class PomodoroApp:   
+    """
+    __init__(root) - sets up the GUI window and initializes status variables
+    validate_num()
+    
+    """
+    
     def __init__(self, root):
         """
         Sets up the GUI window. It also initializes some of the status variables
@@ -90,9 +95,16 @@ class PomodoroApp:
         self.root = root
         style = ttk.Style()
         style.configure("TButton", font=("Verdana", 12))
+        
+        # inital work and rest intervals
+        self.init_work_val = tk.IntVar(root)
+        self.init_work_val.set(25)
+        self.init_rest_val = tk.IntVar(root)
+        self.init_rest_val.set(5)
+        
 
         # App Icon
-        icon = tk.PhotoImage(file="pom_icon.png")
+        icon = tk.PhotoImage(file=".venv\pom_icon.png")
         root.iconphoto(True, icon)
 
         # Main Layout Widgets
@@ -104,20 +116,19 @@ class PomodoroApp:
         main_frame.place(relx = 0.3, y = 0, relwidth = 0.7, relheight = 1)
         # ttk.Label(menu_frame, background='red').pack(expand=True, fill='both')
         # ttk.Label(main_frame, background='yellow').pack(expand=True, fill='both')
-
-        vcmd= root.register(self.validate_num)
         
         # menu widgets
         work_title = ttk.Label(menu_frame, text="Work Interval: ", font=("Verdana", 12))
         rest_title = ttk.Label(menu_frame, text="Rest Interval: ", font=("Verdana", 12))
         # These spinboxes can only take in integer values
         self.work_interval = ttk.Spinbox(menu_frame, from_=0, to=999, font=("Verdana", 12),
-                                         validate="key",
-                                         validatecommand=(vcmd, '%P'))
+                                         textvariable=self.init_work_val,
+                                         state='readonly'
+                                         )
         
         self.rest_interval = ttk.Spinbox(menu_frame, from_=0, to=999, font=("Verdana", 12),
-                                         validate="key", 
-                                         validatecommand=(vcmd, '%P'))
+                                         textvariable=self.init_rest_val,
+                                         state= 'readonly')
 
         self.start_button = ttk.Button(menu_frame, text = 'Start', command=self.start_timer)
         self.pause_button = ttk.Button(menu_frame, text = 'Pause', command=self.pause_timer)
@@ -152,11 +163,17 @@ class PomodoroApp:
         self.state_label.pack(side = 'top', expand = False, fill = 'none', pady= 40)
         self.timer_label.pack(side = 'top', expand = True, fill = 'none')
         
-    def validate_num(self, char):
-        """
-        Determines if the value in a spinbox is a digit or not
-        """
-        return char.isdigit() or char == ""
+    # def validate_num(self):
+    #     """
+    #     Determines if the value in a spinbox is a digit or not
+    #     """
+    #     nb = self.work_interval.get()
+    #     try:
+    #         nb = int(nb)
+    #         self.work_interval.insert(nb)
+    #     except Exception:
+    #         nb = 1
+    #         self.work_interval.insert(nb)
         
     # Main logic? Timedate? Time? or TimeDelta?
     def start_timer(self):
@@ -168,10 +185,11 @@ class PomodoroApp:
         # except
             # set the time to 0
         
-        print("work interval: " + str(self.time_remaining) + " minutes")
         
         print("the timer was started!")
-
+        print("work interval: " + str(self.work_interval) + " minutes")
+        print("self interval: " + str(self.rest_interval) + " minutes")
+        print("time remaining: " + str(self.time_remaining) + " minutes")
         return -1
 
     def pause_timer(self):
