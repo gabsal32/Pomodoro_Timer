@@ -28,7 +28,7 @@ class PomodoroApp:
         self.is_running = False
         self.is_paused = True # if it were false, it would conflict with is_running initially
         self.time_remaining = 0
-        self.work_seesion_active = False 
+        self.work_session_active = False 
         
         self.root = root
         style = ttk.Style()
