@@ -12,8 +12,7 @@ from playsound3 import playsound
 class PomodoroApp:   
     """
     __init__(root) - sets up the GUI window and initializes status variables
-    validate_num()
-    
+    start_timer()   - Sets up 
     """
     def __init__(self, root):
         """
@@ -25,10 +24,10 @@ class PomodoroApp:
         """
         
         # status variables
-        self.is_running = False
-        self.is_paused = True # if it were false, it would conflict with is_running initially
         self.time_remaining = 0
-        self.work_session_active = False 
+        self.work_session_active = False
+        self.session_state = "idle" # can be "idle," "running," or "paused"
+        
         
         self.root = root
         style = ttk.Style()
@@ -41,7 +40,7 @@ class PomodoroApp:
         self.init_rest_val.set(5)  
 
         # App Icon
-        icon = tk.PhotoImage(file=".venv\pom_icon.png")
+        icon = tk.PhotoImage(file=".venv\\pom_icon.png")
         root.iconphoto(True, icon)
 
         # Main Layout Widgets
@@ -102,15 +101,26 @@ class PomodoroApp:
     # Main logic? Timedate? Time? or TimeDelta?
     def start_timer(self):
         playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
-        # time remaining = time_now + (work_interval OR rest_interval) depending
-        # on which state we are in
-        self.time_remaining = int(self.work_interval.get())
+
         # Hide the start button and show the pause button   
         self.start_button.grid_remove()
         self.pause_button.grid()
         
+        # Calculate ending time (this is used in the countdown method)
+        self.time_remaining = int(self.work_interval.get())*60
+        self.end_time = time.time() + self.time_remaining
+        
+        print("time remaining" + str(self.time_remaining))
+        print("end time (in float)" + str(self.end_time))
+        
+        self.work_session_active = True
+        self.is_running = True
+        self.work_session_active = True
+        
+        # TODO set start_time and end time here... 
         print("The timer was started")
-        pass
+        self.countdown()
+
 
     def pause_timer(self):
         playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
@@ -128,9 +138,26 @@ class PomodoroApp:
         pass
 
     def countdown(self):
-        # This part is crucial
-        print("Counting down...")
-        pass
+        # if the timer isn't running, then it shouldn't countdown 
+        if not self.is_running:
+            return 
+        
+        self.time_remaining = self.end_time - time.time()
+        
+        # Check if the time is up
+        if self.time_remaining <= 0:
+            # Handle end
+            self.is_running = False
+            return
+        
+        # Update display with time
+        minutes_txt = str(int(self.time_remaining / 60))
+        seconds_txt = str(int(self.time_remaining % 60))
+        mm_ss_txt = f"{minutes_txt}:{seconds_txt}"
+        print(mm_ss_txt)
+        self.timer_label.config(text=str(mm_ss_txt).zfill(2)) # TODO: Fix this --> zfill(needs one arg) 
+        # Schedule next tick?        
+        self.root.after(1000, self.countdown)
 
 
 # Set up GUI
