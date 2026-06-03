@@ -114,8 +114,7 @@ class PomodoroApp:
         print("end time (in float)" + str(self.end_time))
         
         self.work_session_active = True
-        self.is_running = True
-        self.work_session_active = True
+        self.session_state = "running"
         
         # TODO set start_time and end time here... 
         print("The timer was started")
@@ -139,23 +138,29 @@ class PomodoroApp:
 
     def countdown(self):
         # if the timer isn't running, then it shouldn't countdown 
-        if not self.is_running:
+        if self.session_state != "running":
             return 
         
         self.time_remaining = self.end_time - time.time()
         
         # Check if the time is up
         if self.time_remaining <= 0:
-            # Handle end
-            self.is_running = False
+            # Handle end:
+            # play sound 
+            # make a pop window? 
+            # TODO: Note that you need to be identify the difference between
+            # the actual end of the timer and the end of a work or rest
+            # session (you need to able to switch into a work session) 
+            self.session_state = "idle"
             return
         
         # Update display with time
         minutes_txt = str(int(self.time_remaining / 60))
-        seconds_txt = str(int(self.time_remaining % 60))
+        # Pad minutes with leading zeros 
+        seconds_txt = str(int(self.time_remaining % 60)).zfill(2)
         mm_ss_txt = f"{minutes_txt}:{seconds_txt}"
         print(mm_ss_txt)
-        self.timer_label.config(text=str(mm_ss_txt).zfill(2)) # TODO: Fix this --> zfill(needs one arg) 
+        self.timer_label.config(text=str(mm_ss_txt))
         # Schedule next tick?        
         self.root.after(1000, self.countdown)
 
