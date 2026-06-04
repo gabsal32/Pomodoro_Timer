@@ -110,15 +110,15 @@ class PomodoroApp:
         self.time_remaining = int(self.work_interval.get())*60
         self.end_time = time.time() + self.time_remaining
         
-        print("time remaining" + str(self.time_remaining))
-        print("end time (in float)" + str(self.end_time))
+        #print("time remaining" + str(self.time_remaining))
+        #print("end time (in float)" + str(self.end_time))
         
         self.work_session_active = True
         self.session_state = "running"
         
-        # TODO set start_time and end time here... 
         print("The timer was started")
         self.countdown()
+        return 
 
 
     def pause_timer(self):
@@ -126,9 +126,13 @@ class PomodoroApp:
         # hide the pause button and show the start button
         self.pause_button.grid_remove()
         self.start_button.grid()
-        # add stuff here
+        
+        # Update status variables
+        self.session_state = "paused"
+        # save the time remaining ensure the timer doesn't jump when unpausing
+        self.time_remaining = self.end_time - time.time()
         print("The timer was paused!")
-        pass
+        return
 
     def reset_timer(self):
         playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
