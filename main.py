@@ -106,13 +106,19 @@ class PomodoroApp:
         self.start_button.grid_remove()
         self.pause_button.grid()
         
-        # Calculate ending time (this is used in the countdown method)
-        self.time_remaining = int(self.work_interval.get())*60
-        self.end_time = time.time() + self.time_remaining
+        # Do not recalculate the remaining time if timer is paused or
+        # already running 
+        if self.session_state == "idle":
+            # Calculate ending time (this is used in the countdown method)
+            self.time_remaining = int(self.work_interval.get())*60
+            self.end_time = time.time() + self.time_remaining
+        else:
+            self.end_time = time.time() + self.time_remaining
         
         #print("time remaining" + str(self.time_remaining))
         #print("end time (in float)" + str(self.end_time))
         
+        # vv Should handle this differently to determine idle, work, or rest vv
         self.work_session_active = True
         self.session_state = "running"
         
