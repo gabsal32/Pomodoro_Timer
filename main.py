@@ -4,15 +4,18 @@ from tkinter import ttk
 import time 
 from playsound3 import playsound
 
-
-# Global Variables here
-
+# default values for timer
+work_default_val = 25
+rest_default_val = 5
 
 # GUI 
 class PomodoroApp:   
     """
     __init__(root) - sets up the GUI window and initializes status variables
-    start_timer()   - Sets up 
+    start_timer()   - Starts or resumes the timer
+    pause_timer()   - pauses the timer
+    reset_timer()   - resets the timer to original state
+    countdown()     - counts down the timer to 00:00 
     """
     def __init__(self, root):
         """
@@ -35,9 +38,9 @@ class PomodoroApp:
         
         # inital work and rest intervals
         self.init_work_val = tk.IntVar(root)
-        self.init_work_val.set(25)
+        self.init_work_val.set(work_default_val)
         self.init_rest_val = tk.IntVar(root)
-        self.init_rest_val.set(5)  
+        self.init_rest_val.set(rest_default_val)  
 
         # App Icon
         icon = tk.PhotoImage(file=".venv\\pom_icon.png")
@@ -106,14 +109,15 @@ class PomodoroApp:
         self.start_button.grid_remove()
         self.pause_button.grid()
         
-        # Do not recalculate the remaining time if timer is paused or
-        # already running 
+        # If the timer hasn't been started set its time remaining
+        # (don't do this if is paused because it causes the timer to jump)
         if self.session_state == "idle":
             # Calculate ending time (this is used in the countdown method)
             self.time_remaining = int(self.work_interval.get())*60
-            self.end_time = time.time() + self.time_remaining
-        else:
-            self.end_time = time.time() + self.time_remaining
+        #     self.end_time = time.time() + self.time_remaining          
+        # else:
+        #     self.end_time = time.time() + self.time_remaining
+        self.end_time = time.time() + self.time_remaining
         
         #print("time remaining" + str(self.time_remaining))
         #print("end time (in float)" + str(self.end_time))
@@ -137,14 +141,26 @@ class PomodoroApp:
         self.session_state = "paused"
         # save the time remaining ensure the timer doesn't jump when unpausing
         self.time_remaining = self.end_time - time.time()
+        self.state_label.config(text="Paused")
         print("The timer was paused!")
         return
 
     def reset_timer(self):
         playsound("Sound_effects\\506054__mellau__button-click-1.wav", False)
-        # add stuff here
+        # change timer state
+        self.session_state = "idle"
+        self.time_remaining = 0 
+
+        # Hide the pause timer and show the start timer
+        self.pause_button.grid_remove()
+        self.start_button.grid()
+        
+        # Probably shouldn't hardcode, but whatever
+        self.timer_label.config(text="0:00")
+        self.state_label.config(text="Timer reset")
         print("The timer was reset!")
-        pass
+        return
+
 
     def countdown(self):
         # if the timer isn't running, then it shouldn't countdown 
