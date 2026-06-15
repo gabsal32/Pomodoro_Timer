@@ -1,6 +1,7 @@
 # Imports here
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import time 
 from playsound3 import playsound
 
@@ -28,7 +29,7 @@ class PomodoroApp:
         
         # status variables
         self.time_remaining = 0
-        self.work_session_active = False
+        self.work_session_active = True
         self.session_state = "idle" # can be "idle," "running," or "paused"
         
         
@@ -109,21 +110,34 @@ class PomodoroApp:
         self.start_button.grid_remove()
         self.pause_button.grid()
         
-        # If the timer hasn't been started set its time remaining
-        # (don't do this if is paused because it causes the timer to jump)
+        # # If the timer hasn't been started set its time remaining
+        # # (don't do this if is paused because it causes the timer to jump)
+        # if self.session_state == "idle":
+        #     # Calculate ending time (this is used in the countdown method)
+        #     self.time_remaining = int(self.work_interval.get())*60
+        # #     self.end_time = time.time() + self.time_remaining          
+        # # else:
+        # #     self.end_time = time.time() + self.time_remaining
+        # self.end_time = time.time() + self.time_remaining
+        
+        # #print("time remaining" + str(self.time_remaining))
+        # #print("end time (in float)" + str(self.end_time))
+        
+        # # vv Should handle this differently to determine idle, work, or rest vv
+        # self.work_session_active = True
+        
+      
         if self.session_state == "idle":
-            # Calculate ending time (this is used in the countdown method)
-            self.time_remaining = int(self.work_interval.get())*60
-        #     self.end_time = time.time() + self.time_remaining          
-        # else:
-        #     self.end_time = time.time() + self.time_remaining
+            if self.work_session_active == True:
+                self.time_remaining = int(self.work_interval.get())*60
+                print("we are in a WORK session.")
+            else:
+                self.time_remaining = int(self.rest_interval.get())*60
+                print("we are in a REST session.")
+        
         self.end_time = time.time() + self.time_remaining
+      
         
-        #print("time remaining" + str(self.time_remaining))
-        #print("end time (in float)" + str(self.end_time))
-        
-        # vv Should handle this differently to determine idle, work, or rest vv
-        self.work_session_active = True
         self.session_state = "running"
         
         print("The timer was started")
@@ -156,7 +170,11 @@ class PomodoroApp:
         self.start_button.grid()
         
         # Probably shouldn't hardcode, but whatever
-        self.timer_label.config(text="0:00")
+        # Format label as "mm:00"
+        mm_txt = self.work_interval.get()
+        ss_txt = str(int(self.time_remaining % 60)).zfill(2)
+        mm_ss_txt = f"{mm_txt}:{ss_txt}"
+        self.timer_label.config(text=mm_ss_txt)
         self.state_label.config(text="Timer reset")
         print("The timer was reset!")
         return
@@ -172,14 +190,10 @@ class PomodoroApp:
         # Check if the time is up
         if self.time_remaining <= 0:
             # Handle end:
-            # play sound 
-            # make a pop window? 
-            # TODO: Note that you need to be identify the difference between
-            # the actual end of the timer and the end of a work or rest
-            # session (you need to able to switch into a work session) 
-            self.session_state = "idle"
+            self.end_timer()
             return
         
+        # TODO: Make this little section its own function 
         # Update display with time
         minutes_txt = str(int(self.time_remaining / 60))
         # Pad minutes with leading zeros 
@@ -189,6 +203,40 @@ class PomodoroApp:
         self.timer_label.config(text=str(mm_ss_txt))
         # Schedule next tick?        
         self.root.after(1000, self.countdown)
+    
+    def end_timer(self):
+        # play sound
+            
+        # The timer should now be idle 
+        self.session_state = "idle"
+        
+        # Cycle to either "rest" or "work"
+        self.work_session_active = not self.work_session_active
+        
+        # Hide the "pause" button and display the "start" button
+        self.pause_button.grid_remove()
+        self.start_button.grid()
+        
+        # Let the user know if it's time to work or rest by creating a pop up window
+        cycle_msg = ""
+        if self.work_session_active == True:
+            cycle_msg = "working"
+        else:
+            cycle_msg = "resting"
+            
+        # make pop up window
+        self.popupMsg('Timer Finished!', 'The timer has finished!'
+                      f' Please Click the "start" button and begin {cycle_msg}.')
+        return
+    
+    def popupMsg(self, title, msg):
+        popup = messagebox.showinfo(title=title, message=msg)
+        return
+    
+    def display_time(self, min):
+
+        return
+    
 
 
 # Set up GUI
