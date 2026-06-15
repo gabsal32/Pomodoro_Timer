@@ -93,7 +93,7 @@ class PomodoroApp:
         self.reset_button.grid(row = 4, column = 0, sticky = 'nswe', columnspan = 2)
 
         # Main Widgets (The timer countdown and what state the app is in)
-        self.state_label = ttk.Label(main_frame, text = '[Click "start"]/[Work]/[Rest]/[Paused]',
+        self.state_label = ttk.Label(main_frame, text = 'Click "Start" to begin.',
                                 font = ("Verdana", 14) )
         self.timer_label = ttk.Label(main_frame, text = '25:00', font = ('Verdana', 25))
 
@@ -130,9 +130,11 @@ class PomodoroApp:
         if self.session_state == "idle":
             if self.work_session_active == True:
                 self.time_remaining = int(self.work_interval.get())*60
+                self.state_label.config(text="Work")
                 print("we are in a WORK session.")
             else:
                 self.time_remaining = int(self.rest_interval.get())*60
+                self.state_label.config(text="Rest")
                 print("we are in a REST session.")
         
         self.end_time = time.time() + self.time_remaining
@@ -193,12 +195,13 @@ class PomodoroApp:
             self.end_timer()
             return
         
-        # TODO: Make this little section its own function 
-        # Update display with time
-        minutes_txt = str(int(self.time_remaining / 60))
-        # Pad minutes with leading zeros 
-        seconds_txt = str(int(self.time_remaining % 60)).zfill(2)
-        mm_ss_txt = f"{minutes_txt}:{seconds_txt}"
+        # # TODO: Make this little section its own function 
+        # # Update display with time
+        # minutes_txt = str(int(self.time_remaining / 60))
+        # # Pad minutes with leading zeros 
+        # seconds_txt = str(int(self.time_remaining % 60)).zfill(2)
+        # mm_ss_txt = f"{minutes_txt}:{seconds_txt}"
+        mm_ss_txt = self.get_display_time(self.time_remaining)
         print(mm_ss_txt)
         self.timer_label.config(text=str(mm_ss_txt))
         # Schedule next tick?        
@@ -227,15 +230,20 @@ class PomodoroApp:
         # make pop up window
         self.popupMsg('Timer Finished!', 'The timer has finished!'
                       f' Please Click the "start" button and begin {cycle_msg}.')
+        
+        self.state_label.config('Please click "Start"')
         return
     
     def popupMsg(self, title, msg):
         popup = messagebox.showinfo(title=title, message=msg)
         return
     
-    def display_time(self, min):
-
-        return
+    def get_display_time(self, min):
+        # Update display with time
+        minutes_txt = str(int(min / 60))
+        # Pad minutes with leading zeros 
+        seconds_txt = str(int(min % 60)).zfill(2)
+        return f"{minutes_txt}:{seconds_txt}"
     
 
 
