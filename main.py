@@ -32,7 +32,6 @@ class PomodoroApp:
         self.work_session_active = True
         self.session_state = "idle" # can be "idle," "running," or "paused"
         
-        
         self.root = root
         style = ttk.Style()
         style.configure("TButton", font=("Verdana", 12))
@@ -109,23 +108,6 @@ class PomodoroApp:
         # Hide the start button and show the pause button   
         self.start_button.grid_remove()
         self.pause_button.grid()
-        
-        # # If the timer hasn't been started set its time remaining
-        # # (don't do this if is paused because it causes the timer to jump)
-        # if self.session_state == "idle":
-        #     # Calculate ending time (this is used in the countdown method)
-        #     self.time_remaining = int(self.work_interval.get())*60
-        # #     self.end_time = time.time() + self.time_remaining          
-        # # else:
-        # #     self.end_time = time.time() + self.time_remaining
-        # self.end_time = time.time() + self.time_remaining
-        
-        # #print("time remaining" + str(self.time_remaining))
-        # #print("end time (in float)" + str(self.end_time))
-        
-        # # vv Should handle this differently to determine idle, work, or rest vv
-        # self.work_session_active = True
-        
       
         if self.session_state == "idle":
             if self.work_session_active == True:
@@ -138,7 +120,6 @@ class PomodoroApp:
                 print("we are in a REST session.")
         
         self.end_time = time.time() + self.time_remaining
-      
         
         self.session_state = "running"
         
@@ -208,8 +189,6 @@ class PomodoroApp:
         self.root.after(1000, self.countdown)
     
     def end_timer(self):
-        # play sound
-            
         # The timer should now be idle 
         self.session_state = "idle"
         
