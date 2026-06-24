@@ -17,6 +17,9 @@ class PomodoroApp:
     pause_timer()   - pauses the timer
     reset_timer()   - resets the timer to original state
     countdown()     - counts down the timer to 00:00 
+    end_timer()     - handles the end of the timer
+    popupMsg()     - handles popups
+    get_display_time - returns time as MM:SS
     """
     def __init__(self, root):
         """
@@ -175,13 +178,7 @@ class PomodoroApp:
             # Handle end:
             self.end_timer()
             return
-        
-        # # TODO: Make this little section its own function 
-        # # Update display with time
-        # minutes_txt = str(int(self.time_remaining / 60))
-        # # Pad minutes with leading zeros 
-        # seconds_txt = str(int(self.time_remaining % 60)).zfill(2)
-        # mm_ss_txt = f"{minutes_txt}:{seconds_txt}"
+
         mm_ss_txt = self.get_display_time(self.time_remaining)
         print(mm_ss_txt)
         self.timer_label.config(text=str(mm_ss_txt))
@@ -235,6 +232,7 @@ def main():
     root.minsize(900,600)
     # create widgets for GUI
     app = PomodoroApp(root)
+    # run the app!
     root.mainloop()
     
 if __name__ == "__main__":
