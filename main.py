@@ -46,7 +46,7 @@ class PomodoroApp:
         self.init_rest_val.set(rest_default_val)  
 
         # App Icon
-        icon = tk.PhotoImage(file=".venv\\pom_icon.png")
+        icon = tk.PhotoImage(file="pom_icon.png")
         root.iconphoto(True, icon)
 
         # Main Layout Widgets
