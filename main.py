@@ -116,17 +116,17 @@ class PomodoroApp:
             if self.work_session_active == True:
                 self.time_remaining = int(self.work_interval.get())*60
                 self.state_label.config(text="Work")
-                print("we are in a WORK session.")
+                #print("we are in a WORK session.")
             else:
                 self.time_remaining = int(self.rest_interval.get())*60
                 self.state_label.config(text="Rest")
-                print("we are in a REST session.")
+                #print("we are in a REST session.")
         
         self.end_time = time.time() + self.time_remaining
         
         self.session_state = "running"
         
-        print("The timer was started")
+        #print("The timer was started")
         self.countdown()
         return 
 
@@ -142,7 +142,7 @@ class PomodoroApp:
         # save the time remaining ensure the timer doesn't jump when unpausing
         self.time_remaining = self.end_time - time.time()
         self.state_label.config(text="Paused")
-        print("The timer was paused!")
+        #print("The timer was paused!")
         return
 
     def reset_timer(self):
@@ -162,7 +162,7 @@ class PomodoroApp:
         mm_ss_txt = f"{mm_txt}:{ss_txt}"
         self.timer_label.config(text=mm_ss_txt)
         self.state_label.config(text="Timer reset")
-        print("The timer was reset!")
+        #print("The timer was reset!")
         return
 
 
@@ -180,7 +180,7 @@ class PomodoroApp:
             return
 
         mm_ss_txt = self.get_display_time(self.time_remaining)
-        print(mm_ss_txt)
+        #print(mm_ss_txt)
         self.timer_label.config(text=str(mm_ss_txt))
         # Schedule next tick?        
         self.root.after(1000, self.countdown)
